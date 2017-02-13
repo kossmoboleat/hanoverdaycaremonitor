@@ -1,0 +1,16 @@
+{:dev                       true
+ :port                      3000
+ ;; when :nrepl-port is set the application starts the nREPL server on load
+ :nrepl-port                7000
+ :latitude                  "52.371235"
+ :longitude                 "9.727861100000041"
+ ;; distance in km
+ :distance                  5
+ ;; add daycares here
+ :known-daycares            #{"Daycare 1" "Daycare 2"}
+ ;; add recipients here, e.g. "mail@example.com, mail@beispiel.de"
+ :recipient-email-addresses ""
+ ;; add your mailgun API key here, e.g. key-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ :mailgun-api-key           ""
+ ;; add your mailgun sender domain, e.g. daycare-checker.de
+ :mail-sender-domain        ""}

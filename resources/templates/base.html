@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <META name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hanover Daycare-Map</title>
+
+    {% style "/assets/bootstrap/css/bootstrap.min.css" %}
+    {% style "/assets/font-awesome/css/font-awesome.min.css" %}
+    {% style "/assets/leaflet/leaflet.css" %}
+
+    {% style "/css/screen.css" %}
+</head>
+<body>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div id="mapid"></div>
+
+{% script "/assets/jquery/jquery.min.js" %}
+{% script "/assets/tether/dist/js/tether.min.js" %}
+{% script "/assets/bootstrap/js/bootstrap.min.js" %}
+{% script "/assets/leaflet/leaflet.js" %}
+
+<script type="text/javascript">
+    var context = "{{servlet-context}}";
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var mymap = L.map('mapid').setView([52.3759, 9.7320], 13);
+
+        // TODO change tiling provider to openstreetmap
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(mymap);
+
+        $.get("/daycares", function (daycares) {
+            daycares.forEach(function (daycare) {
+                var places = daycare.plaetze;
+                if (places && !places.startsWith("0")) {
+                    var marker = L.marker([daycare.latitude, daycare.longitude]).addTo(mymap);
+
+                    var detailLink = daycare.additionalDivs.detailLink;
+                    detailLink = detailLink.replace("conect/portal/core/ajax.php", "index.php");
+
+                    marker.bindPopup("<b>" + daycare.anzeigename + "</b><br>" +
+                        "Available: <i>" + daycare.plaetze + "</i><br>" +
+                        detailLink);
+                }
+            });
+        });
+
+    });
+</script>
+{% block page-scripts %}
+{% endblock %}
+</body>
+</html>
